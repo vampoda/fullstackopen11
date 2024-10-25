@@ -9,9 +9,15 @@ module.exports = {
     "plugin:react/recommended", // Recommended rules for React
   ],
   parserOptions: {
-    ecmaVersion: 2020, // Use the latest ECMAScript version
+    ecmaVersion: 2023, // Use the latest ECMAScript version
     sourceType: "module", // Enable ES modules
+    ecmaFeatures: {
+      jsx: true, // Enable JSX
+    },
+  
   },
+
+
   plugins: [
     "react", // Enable React plugin
   ],
