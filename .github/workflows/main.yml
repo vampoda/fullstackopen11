@@ -1,0 +1,40 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  simple_deployment_pipeline:
+    runs-on: ubuntu-20.04
+    steps:
+      # Step 1: Checkout the code
+      - uses: actions/checkout@v4
+      
+      # Step 2: Set up Node.js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+      
+      # Step 4: Check code style with ESLint
+      - name: Check style
+        run: npm run eslint
+      
+      # Step 5: Build the application
+      - name: Build application
+        run: npm run build
+      
+      # Step 6: Run unit tests
+      - name: Run tests
+        run: npm test
+      
+      # Optional: Print date and list directory contents for debugging
+      - name: Print date
+        run: date
+      - name: List directory
+        run: ls -l
