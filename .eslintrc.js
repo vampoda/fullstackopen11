@@ -23,6 +23,9 @@ module.exports = {
   ],
   rules: {
     "react/react-in-jsx-scope": "off", // Disable if using React 17+
+    "no-unused-vars": ["off", { vars: "all", args: "after-used", ignoreRestSiblings: true }] // Change to "off" to ignore completely
+
+ 
   },
   settings: {
     react: {
