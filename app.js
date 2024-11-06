@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 
 // get the port from env variable
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 80;
 
 app.get("/version",(req,res)=>{
 res.send("v1")
