@@ -55,7 +55,7 @@ jobs:
 
       # Step 2: Set up GitHub CLI to interact with the GitHub API
       - name: Set up GitHub CLI
-        uses: cli/cli@v2.28.0
+        uses: github/gh-action@v1
         with:
           gh-token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for API interactions
 
