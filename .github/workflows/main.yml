@@ -1,10 +1,11 @@
 name: Deployment Pipeline
 
 on:
-  push:
+  pull_request:
     branches:
       - main  # Trigger the workflow when code is pushed to the dev branch
-
+    types:
+      - closed 
 
 jobs:
   run_tests_and_merge:
