@@ -1,17 +1,21 @@
-name: Deployment pipeline
+name: Deployment Pipeline
 
 on:
   push:
     branches:
-      - main
+      - dev  # Trigger the workflow when code is pushed to the dev branch
+  pull_request:
+    branches: 
+      - dev  # Trigger the workflow when a PR is opened or synchronized targeting dev branch
+    types: [opened, synchronize]
 
 jobs:
-  simple_deployment_pipeline:
+  run_tests_and_merge:
     runs-on: ubuntu-20.04
     steps:
       # Step 1: Checkout the code
       - uses: actions/checkout@v4
-      
+
       # Step 2: Set up Node.js
       - uses: actions/setup-node@v4
         with:
@@ -20,7 +24,7 @@ jobs:
       # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
-      
+
       # Step 4: Check code style with ESLint
       - name: Check style
         run: npm run eslint
@@ -32,9 +36,32 @@ jobs:
       # Step 6: Run unit tests
       - name: Run tests
         run: npm test
-      
-      # Optional: Print date and list directory contents for debugging
+
+      # Step 7: Print date for debugging purposes (Optional)
       - name: Print date
         run: date
+
+      # Step 8: List directory contents (Optional)
       - name: List directory
         run: ls -l
+
+  merge_pr:
+    needs: run_tests_and_merge  # Ensure the tests pass before merging
+    runs-on: ubuntu-20.04
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up GitHub CLI to interact with the GitHub API
+      - name: Set up GitHub CLI
+        uses: github/gh-action@v1
+        with:
+          gh-token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for API interactions
+
+      # Step 3: Automatically merge the PR if tests passed
+      - name: Merge PR to main if tests pass
+        if: success()  # This ensures it runs only if the previous job (test) was successful
+        run: |
+          pr_number=$(echo ${{ github.event.pull_request.number }})
+          gh pr merge $pr_number --merge --auto --admin --repo ${{ github.repository }}
