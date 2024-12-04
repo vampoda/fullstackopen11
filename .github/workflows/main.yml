@@ -43,23 +43,23 @@ jobs:
       - name: List directory
         run: ls -l
 
-  merge_pr:
-    needs: run_tests_and_merge  # Ensure the tests pass before merging
-    runs-on: ubuntu-20.04
-    steps:
-      # Step 1: Checkout the repository
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  # merge_pr:
+  #   needs: run_tests_and_merge  # Ensure the tests pass before merging
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     # Step 1: Checkout the repository
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
 
-      # Step 2: Set up GitHub CLI to interact with the GitHub API
-      - name: Set up GitHub CLI
-        uses: github/gh-action@v1
-        with:
-          gh-token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for API interactions
+  #     # Step 2: Set up GitHub CLI to interact with the GitHub API
+  #     - name: Set up GitHub CLI
+  #       uses: github/gh-action@v1
+  #       with:
+  #         gh-token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for API interactions
 
-      # Step 3: Automatically merge the PR if tests passed
-      - name: Merge PR to main if tests pass
-        if: success()  # This ensures it runs only if the previous job (test) was successful
-        run: |
-          pr_number=$(echo ${{ github.event.pull_request.number }})
-          gh pr merge $pr_number --merge --auto --admin --repo ${{ github.repository }}
+  #     # Step 3: Automatically merge the PR if tests passed
+  #     - name: Merge PR to main if tests pass
+  #       if: success()  # This ensures it runs only if the previous job (test) was successful
+  #       run: |
+  #         pr_number=$(echo ${{ github.event.pull_request.number }})
+  #         gh pr merge $pr_number --merge --auto --admin --repo ${{ github.repository }}
